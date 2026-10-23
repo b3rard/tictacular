@@ -2,40 +2,301 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tic-Tacular</title>
-<meta name="description" content="Tic-Tacular: tic tac toe, reimagined, for iPhone, iPad, Mac, Apple Watch, Apple TV and Apple Vision Pro.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tic-Tacular: Tic Tac Toe and 12 More Ways to Play</title>
+<meta name="description" content="Tic tac toe the way you remember it, plus twelve new ways to play, including Tic-Tac-Attack for 2 to 5 players. Free, with no ads and no tracking. For iPhone, iPad, Mac, Apple Watch, Apple TV and Apple Vision Pro.">
+<meta name="theme-color" content="#14112b">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="apple-touch-icon" href="images/icon-180.png">
+<meta property="og:title" content="Tic-Tacular">
+<meta property="og:description" content="Tic tac toe the way you remember it, plus twelve new ways to play. Free, with no ads and no tracking.">
+<meta property="og:image" content="https://tictacular.com/images/og.jpg">
+<meta property="og:url" content="https://tictacular.com/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <style>
-:root{--bg:#fbfaf7;--fg:#1d1d1f;--muted:#5b5b60;--accent:#0a5fd1;--card:#ffffff;--line:#e2e0da}
-@media (prefers-color-scheme:dark){:root{--bg:#121214;--fg:#f2f2f4;--muted:#a8a8ad;--accent:#6aa8ff;--card:#1c1c1f;--line:#2e2e33}}
+:root{
+  --bg:#fbfaf7;--fg:#1d1d1f;--muted:#5d5c63;--line:#e4e1da;--card:#ffffff;
+  --x:#0a5fd1;--o:#c8461b;--accent:#0a5fd1;
+  --band:#14112b;--band-fg:#f4f2ff;--band-muted:#b9b4d8;
+  --radius:22px;--wrap:1120px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0d0c17;--fg:#f2f1f7;--muted:#a9a6b8;--line:#25233a;--card:#17152a;
+        --x:#5aa2ff;--o:#ff8a5c;--accent:#7cb4ff}
+}
 *{box-sizing:border-box}
-html{color-scheme:light dark}
-body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%}
-main,header,footer{max-width:720px;margin:0 auto;padding:0 20px}
-header{padding-top:28px}
-nav a{margin-right:18px}
-a{color:var(--accent)}
-a:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:3px}
-h1{font-size:2rem;line-height:1.2;margin:28px 0 8px}
-h2{font-size:1.3rem;margin:32px 0 8px}
-h3{font-size:1.05rem;margin:22px 0 4px}
-.muted{color:var(--muted)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:16px 0}
-footer{padding-top:24px;padding-bottom:40px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);margin-top:48px}
-.skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:var(--card);padding:6px 10px}
+html{color-scheme:light dark;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font:18px/1.55 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-text-size-adjust:100%;text-rendering:optimizeLegibility}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;z-index:9;background:var(--card);padding:8px 12px;border-radius:8px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:max(20px,env(safe-area-inset-left))}
+h1,h2,h3{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  letter-spacing:-.022em;text-wrap:balance;margin:0}
+h2{font-size:clamp(2rem,4.6vw,3.1rem);line-height:1.08}
+h3{font-size:1.12rem;letter-spacing:-.01em}
+p{margin:0}
+.eyebrow{font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--o)}
+.lede{font-size:clamp(1.08rem,1.9vw,1.3rem);color:var(--muted);max-width:40em}
+
+/* Top bar */
+.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--band) 86%,transparent);
+  -webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);color:var(--band-fg)}
+.top .wrap{display:flex;align-items:center;gap:20px;min-height:56px;padding-top:env(safe-area-inset-top)}
+.brand{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;font-weight:700;letter-spacing:-.01em}
+.brand img{width:30px;height:30px;border-radius:7px}
+.top nav{margin-left:auto;display:flex;gap:22px;flex-wrap:wrap}
+.top nav a{color:var(--band-muted);text-decoration:none;font-size:.92rem}
+.top nav a:hover{color:var(--band-fg)}
+@media (max-width:640px){.top nav .opt{display:none}}
+
+/* Hero */
+.hero{background:var(--band);color:var(--band-fg);overflow:hidden}
+.hero picture img{width:100%;aspect-ratio:3840/1646;max-height:560px;object-fit:cover}
+@media (max-width:700px){.hero picture img{aspect-ratio:1/1}}
+.hero .copy{text-align:center;padding-block:8px 72px}
+.hero .icon{width:96px;height:96px;margin:-48px auto 18px;filter:drop-shadow(0 12px 28px rgb(0 0 0 / .45))}
+.hero h1{font-size:clamp(2.6rem,7vw,4.6rem);line-height:1}
+.hero .tag{font-size:clamp(1.15rem,2.2vw,1.45rem);color:var(--band-muted);margin:14px auto 0;max-width:30em}
+.soon{display:inline-flex;align-items:center;gap:10px;margin-top:28px;padding:12px 22px;border-radius:999px;
+  background:#fff;color:#111;font-weight:650;font-size:1rem}
+.facts{display:flex;justify-content:center;gap:10px 22px;flex-wrap:wrap;margin-top:18px;color:var(--band-muted);font-size:.95rem}
+.facts span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--o);margin-right:8px;vertical-align:middle}
+
+/* Sections */
+section{padding-block:96px}
+section + section{border-top:1px solid var(--line)}
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.split.flip .text{order:2}
+.text{display:grid;gap:18px;min-width:0}
+.shot{display:flex;justify-content:center}
+.shot img{max-height:620px;width:auto;filter:drop-shadow(0 30px 40px rgb(20 17 43 / .18))}
+@media (max-width:860px){.split{grid-template-columns:1fr;gap:40px}.split.flip .text{order:0}.shot img{max-height:520px}}
+ul.ticks{list-style:none;padding:0;margin:4px 0 0;display:grid;gap:10px}
+ul.ticks li{padding-left:28px;position:relative}
+ul.ticks li::before{content:"";position:absolute;left:2px;top:.55em;width:12px;height:12px;border-radius:50%;border:2.5px solid var(--o)}
+ul.ticks li:nth-child(odd)::before{border:0;width:14px;height:14px;top:.45em;border-radius:0;
+  background:linear-gradient(45deg,transparent 42%,var(--x) 42% 58%,transparent 58%),linear-gradient(-45deg,transparent 42%,var(--x) 42% 58%,transparent 58%)}
+
+/* Modes */
+.head{display:grid;gap:16px;margin-bottom:44px;max-width:44em}
+.modes{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.mode.wide{grid-column:span 2}
+@media (max-width:900px){.modes{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.modes{grid-template-columns:1fr}.mode.wide{grid-column:auto}}
+.mode{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:grid;gap:6px}
+.mode p{color:var(--muted);font-size:.96rem}
+.mode.new{border-color:color-mix(in srgb,var(--o) 55%,var(--line))}
+.mode.new h3::after{content:"New";margin-left:8px;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;
+  color:#fff;background:var(--o);padding:2px 7px;border-radius:999px;vertical-align:3px}
+
+/* Themes */
+.themes{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.themes figure{margin:0;display:grid;gap:8px}
+.themes img{border-radius:16px;aspect-ratio:1;object-fit:cover;width:100%;box-shadow:0 1px 0 var(--line)}
+.themes figcaption{font-size:.9rem;color:var(--muted);text-align:center}
+@media (max-width:760px){.themes{grid-template-columns:repeat(2,1fr)}}
+.pro{margin-top:36px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px}
+.pro .badge{font-weight:800;font-size:.8rem;letter-spacing:.08em;color:#fff;background:var(--x);padding:4px 9px;border-radius:7px}
+.pro p{color:var(--muted)}
+.pro strong{color:var(--fg)}
+
+/* Devices */
+.devices{background:var(--band);color:var(--band-fg);border-top:0}
+.devices .lede{color:var(--band-muted)}
+.devices .eyebrow{color:#ff9d76}
+.lineup{margin:48px auto 0}
+.platforms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:22px 28px;margin-top:56px}
+.platforms h3{margin-bottom:4px}
+.platforms p{color:var(--band-muted);font-size:.96rem}
+
+/* Story */
+.story .split{grid-template-columns:.9fr 1.1fr}
+.story img{border-radius:var(--radius);box-shadow:0 20px 50px rgb(0 0 0 / .14)}
+.story blockquote{margin:0;font-size:clamp(1.1rem,1.8vw,1.28rem);line-height:1.6;display:grid;gap:16px}
+.story .sig{color:var(--muted);font-size:.98rem}
+@media (max-width:860px){.story .split{grid-template-columns:1fr}}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding-block:40px 56px;color:var(--muted);font-size:.9rem}
+footer .wrap{display:grid;gap:14px}
+footer nav{display:flex;gap:22px;flex-wrap:wrap}
+footer .legal{font-size:.8rem;max-width:60em}
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header><nav aria-label="Site"><a href="./">Home</a><a href="support.html">Support</a><a href="privacy.html">Privacy</a></nav></header>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="images/icon-180.png" alt="" width="30" height="30">Tic-Tacular</a>
+    <nav aria-label="Site">
+      <a class="opt" href="#modes">Modes</a>
+      <a class="opt" href="#themes">Themes</a>
+      <a class="opt" href="#devices">Devices</a>
+      <a href="support">Support</a>
+      <a href="privacy">Privacy</a>
+    </nav>
+  </div>
+</header>
+
 <main id="main">
-<h1>Tic-Tacular</h1>
-<p>Tic tac toe, reimagined: seven modes, sixteen themes, and play against the computer, a friend on the same device, someone nearby, over FaceTime, in Messages, or online with Game Center. For iPhone, iPad, Mac, Apple Watch, Apple TV and Apple Vision Pro.</p>
-<div class="card">
-<p><strong><a href="support.html">Support</a></strong> &mdash; help, frequently asked questions, and how to reach me.</p>
-<p><strong><a href="privacy.html">Privacy Policy</a></strong> &mdash; Tic-Tacular collects no data.</p>
-</div>
+  <div class="hero">
+    <picture>
+      <source media="(max-width:700px)" srcset="images/hero-mobile.jpg">
+      <img src="images/hero.jpg" alt="Tic tac toe boards fanned across a starry sky, each in a different theme: Napkin pen on paper, Midnight neon, Christmas, Space, Mint and more." width="2400" height="1029">
+    </picture>
+    <div class="copy wrap">
+      <img class="icon" src="images/icon.png" alt="" width="96" height="96">
+      <h1>Tic-Tacular</h1>
+      <p class="tag">Tic tac toe the way you remember it, plus twelve new ways to play.</p>
+      <div class="soon" role="note">
+        Coming soon to the App Store
+      </div>
+      <div class="facts"><span>All 13 modes free</span><span>No ads</span><span>No tracking</span></div>
+    </div>
+  </div>
+
+  <section id="attack">
+    <div class="wrap split">
+      <div class="text">
+        <p class="eyebrow">New: Tic-Tac-Attack</p>
+        <h2>Tic tac toe meets conquest.</h2>
+        <p class="lede">Two to five players claim squares, build up their pieces and attack their neighbors with dice. Take every square in Domination, hold a line right across the board, or win three Territories in a row.</p>
+        <ul class="ticks">
+          <li>Open boards, ten built-in maps, or a map you draw</li>
+          <li>Friends, or the computer from Easy to Unbeatable</li>
+          <li>Up to five players on one device, or two online</li>
+        </ul>
+      </div>
+      <div class="shot"><img src="images/attack.png" alt="iPhone showing a game of Tic-Tac-Attack mid-battle: four players' X, O, triangle and square marks across the board, with piece counts and the last roll of the dice." width="434" height="900" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section id="modes">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">13 ways to play</p>
+        <h2>Every one of them free.</h2>
+        <p class="lede">Start with the game you grew up with, then try a board that falls, a mark in two places at once, or nine games inside one.</p>
+      </div>
+      <div class="modes">
+        <div class="mode wide"><h3>Classic</h3><p>3×3, three in a row.</p></div>
+        <div class="mode new wide"><h3>Tic-Tac-Attack</h3><p>Conquest with dice, for 2 to 5 players.</p></div>
+        <div class="mode"><h3>Toe-Tac-Tic</h3><p>Classic backwards: three in a row loses.</p></div>
+        <div class="mode"><h3>Infinite</h3><p>Three marks each, and your oldest vanishes.</p></div>
+        <div class="mode wide"><h3>Ultimate</h3><p>Nine boards in one. Your move picks your opponent’s board.</p></div>
+        <div class="mode"><h3>Tapatan</h3><p>Three pieces each, placed and then slid.</p></div>
+        <div class="mode"><h3>Big Boards</h3><p>4×4, 5×5, 9×9 and 15×15 Gomoku.</p></div>
+        <div class="mode"><h3>Gravity</h3><p>Drop marks into a 7×6 grid for four in a row, or play Tumble.</p></div>
+        <div class="mode"><h3>Stacker</h3><p>Three sizes of piece. Big ones swallow small ones.</p></div>
+        <div class="mode"><h3>Numbers</h3><p>Odds against evens. The first line to add up to 15 wins.</p></div>
+        <div class="mode"><h3>Order &amp; Chaos</h3><p>6×6. One side wants five in a row, the other stops it.</p></div>
+        <div class="mode"><h3>Quantum</h3><p>Marks in two squares at once, until a loop collapses them.</p></div>
+        <div class="mode"><h3>Custom</h3><p>Choose the rows, the columns and how many in a row wins.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="anyone">
+    <div class="wrap split flip">
+      <div class="text">
+        <p class="eyebrow">Play anyone</p>
+        <h2>Across the table or across the country.</h2>
+        <ul class="ticks">
+          <li>The computer, from Easy to Unbeatable</li>
+          <li>Pass &amp; play on one device, with names and a record for each player</li>
+          <li>Nearby over Wi-Fi or Bluetooth, no account needed</li>
+          <li>Online with Game Center, or right inside iMessage</li>
+          <li>SharePlay on a FaceTime call</li>
+        </ul>
+      </div>
+      <div class="shot"><img src="images/anyone.png" alt="iPhone showing the Nearby screen, with a radar finding another player in the same room." width="434" height="900" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section id="themes">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Make it yours</p>
+        <h2>Pen on a napkin, or neon at midnight.</h2>
+        <p class="lede">Play in the classic look or in Napkin, where the grid is drawn in pen on a paper napkin. Both are free. Each theme has its own sounds, its own win celebration and its own app icon.</p>
+      </div>
+      <div class="themes">
+        <figure><img src="images/theme-default.jpg" alt="A board in the Default theme" width="600" height="600" loading="lazy"><figcaption>Default</figcaption></figure>
+        <figure><img src="images/theme-napkin.jpg" alt="A board drawn in pen on a paper napkin" width="600" height="600" loading="lazy"><figcaption>Napkin</figcaption></figure>
+        <figure><img src="images/theme-midnight.jpg" alt="A glowing neon board in the Midnight theme" width="600" height="600" loading="lazy"><figcaption>Midnight</figcaption></figure>
+        <figure><img src="images/theme-christmas.jpg" alt="A board in the Christmas theme" width="600" height="600" loading="lazy"><figcaption>Christmas</figcaption></figure>
+        <figure><img src="images/theme-space.jpg" alt="A board in the Space theme" width="600" height="600" loading="lazy"><figcaption>Space</figcaption></figure>
+        <figure><img src="images/theme-od.jpg" alt="A board in the olive-drab OD theme" width="600" height="600" loading="lazy"><figcaption>OD</figcaption></figure>
+        <figure><img src="images/theme-mint.jpg" alt="A board in the Mint theme" width="600" height="600" loading="lazy"><figcaption>Mint</figcaption></figure>
+        <figure><img src="images/theme-sunset.jpg" alt="A board in the Sunset theme" width="600" height="600" loading="lazy"><figcaption>Sunset</figcaption></figure>
+      </div>
+      <div class="pro">
+        <span class="badge">PRO</span>
+        <p><strong>Tic-Tacular Pro adds sixteen more themes.</strong> Midnight neon, outer Space, an olive-drab field kit, Christmas sleigh bells, autumn leaves and more. A one-time purchase, with no subscription. Optional tips in the Tip Jar unlock nothing but my thanks.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="devices" class="devices">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Wherever you play</p>
+        <h2>One game, every Apple device.</h2>
+        <p class="lede">Your stats, achievements and theme follow you through iCloud. 34 achievements, a Game Center leaderboard and stats for every mode.</p>
+      </div>
+      <img class="lineup" src="images/devices.png" alt="Tic-Tacular on iPhone Duo, MacBook Pro, iPad, iPhone with the Home Screen widget, and Apple Watch, each in a different theme." width="2400" height="1157" loading="lazy">
+      <div class="platforms">
+        <div><h3>iPhone</h3><p>Every mode, plus a widget that plays right on your Home Screen.</p></div>
+        <div><h3>iPhone Duo</h3><p>Two columns open, the board on its own page folded like a book, and a laptop layout with the board flat on the table.</p></div>
+        <div><h3>iPad</h3><p>Big boards with room to spare, and Apple Pencil to draw your own X and O.</p></div>
+        <div><h3>Mac</h3><p>A real Mac app, with keyboard shortcuts and menus.</p></div>
+        <div><h3>Apple Watch</h3><p>Classic, Infinite, 4×4 and Tumble on your wrist.</p></div>
+        <div><h3>Apple TV</h3><p>Play from the sofa with the Siri Remote.</p></div>
+        <div><h3>Apple Vision Pro</h3><p>The board sits on your table, and Cube, 4×4×4 tic tac toe in three dimensions, is waiting.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="widget">
+    <div class="wrap split">
+      <div class="text">
+        <p class="eyebrow">Home Screen widget</p>
+        <h2>A game you can play without opening the app.</h2>
+        <p class="lede">Tap a square right on your Home Screen. Switch between the computer and pass &amp; play, change the difficulty, and start a new game, all from the widget.</p>
+      </div>
+      <div class="shot"><img src="images/widget.png" alt="iPhone Home Screen with the Tic-Tacular widgets mid-game." width="434" height="900" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section id="story" class="story">
+    <div class="wrap split">
+      <img src="images/napkin.jpg" alt="A tic tac toe game drawn in blue pen on a paper napkin, with three X's circled for the win." width="1200" height="1200" loading="lazy">
+      <div class="text">
+        <p class="eyebrow">Where it started</p>
+        <blockquote>
+          <p>Whenever my dad and I went out to eat, the game started before the food did. One of us would borrow a pen, flatten a paper napkin on the table and draw the grid. X, O, X. Best of three, then best of five, then just one more, until the plates came out.</p>
+          <p>The napkins never made it home, but the games stayed with me. Tic-Tacular is for every one of those games.</p>
+        </blockquote>
+        <p class="sig">Benjamin Berard · Designed and built by a U.S. veteran</p>
+      </div>
+    </div>
+  </section>
 </main>
-<footer>Made by Benjamin Berard &middot; <a href="mailto:support@tictacular.com">support@tictacular.com</a></footer>
+
+<footer>
+  <div class="wrap">
+    <nav aria-label="Footer"><a href="support">Support</a><a href="privacy">Privacy Policy</a><a href="mailto:support@tictacular.com">support@tictacular.com</a></nav>
+    <p>© 2026 Benjamin Berard. Tic-Tacular collects no data.</p>
+    <p class="legal">Apple, iPhone, iPad, Mac, MacBook Pro, Apple Watch, Apple TV, Apple Vision Pro, Apple Pencil, FaceTime, Game Center, iCloud, iMessage and SharePlay are trademarks of Apple Inc., registered in the U.S. and other countries and regions. App Store is a service mark of Apple Inc.</p>
+  </div>
+</footer>
 </body>
 </html>
